@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>নিউজ আপলোড ফর্ম</title>
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="news-upload.js"></script>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    input, textarea { display: block; margin-bottom: 10px; width: 100%; padding: 8px; }
+    button { padding: 10px 15px; background-color: #b30000; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>📝 নিউজ আপলোড ফর্ম</h2>
+  <input id="title" type="text" placeholder="নিউজ শিরোনাম দিন">
+  <input id="image" type="text" placeholder="ছবির লিংক (URL)">
+  <textarea id="details" placeholder="নিউজ বিস্তারিত লিখুন..."></textarea>
+  <button onclick="uploadNews()">আপলোড করুন</button>
+</body>
+</html>
