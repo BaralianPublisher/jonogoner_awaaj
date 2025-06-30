@@ -1,19 +1,59 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!-- index.html --><!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>জনগণের আওয়াজ</title>
-  <script type="module" src="firebase-config.js"></script>
-  <script type="module" src="news-loader.js"></script>
   <style>
-    body { font-family: 'Arial'; padding: 20px; background: #f9f9f9; }
+    body { font-family: sans-serif; background: #fff8f0; margin: 20px; }
     h1 { color: #b30000; }
-    .news-item { border: 1px solid #ccc; margin: 10px 0; padding: 10px; background: white; }
-    img { max-width: 100%; height: auto; }
+    .news { border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; background: #fff; border-radius: 5px; }
+    img { max-width: 100%; height: auto; border-radius: 5px; }
+    .loading { color: #888; }
   </style>
 </head>
 <body>
-  <h1>📰 জনগণের আওয়াজ</h1>
-  <div id="news-container">লোড হচ্ছে...</div>
-</body>
+  <h1>জনগণের আওয়াজ</h1>
+  <div id="news-container">
+    <p class="loading">লোড হচ্ছে...</p>
+  </div>  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB072--mvlw6JnXnZ-FiUumxiPuZzsStgM",
+      authDomain: "jonogoner-awaaj-84dc1.firebaseapp.com",
+      databaseURL: "https://jonogoner-awaaj-84dc1-default-rtdb.firebaseio.com",
+      projectId: "jonogoner-awaaj-84dc1",
+      storageBucket: "jonogoner-awaaj-84dc1.appspot.com",
+      messagingSenderId: "790301394478",
+      appId: "1:790301394478:web:8a2d22a9d1e553c890c1bf"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const newsRef = ref(db, 'news');
+
+    const container = document.getElementById('news-container');
+    container.innerHTML = "<p class='loading'>ডেটা নিয়ে না...</p>";
+
+    onValue(newsRef, (snapshot) => {
+      const data = snapshot.val();
+      container.innerHTML = "";
+
+      if (data) {
+        Object.values(data).reverse().forEach(news => {
+          const div = document.createElement('div');
+          div.className = 'news';
+          div.innerHTML = `
+            <h3>${news.title}</h3>
+            <img src="${news.image}" alt="image">
+            <p>${news.content}</p>
+          `;
+          container.appendChild(div);
+        });
+      } else {
+        container.innerHTML = "<p>কোনো নিউজ পাওয়া গয়নি না</p>";
+      }
+    });
+  </script></body>
 </html>
